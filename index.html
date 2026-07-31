@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Usuário</title>
+    <!-- FontAwesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Folha de estilos -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="main-container">
+        <div class="content-wrapper">
+            
+            <div id="conteudo-app" class="app-content">
+                
+               
+                <!-- Grid de 1/3 e 2/3 -->
+                <div class="layout-grid">
+                    
+                    <!-- Coluna da Esquerda: Formulário -->
+                    <div class="sidebar-col">
+                        <div class="form-card">
+                            <div class="form-header">
+                                <h2 id="form-titulo" class="form-title">Novo Usuário</h2>
+                                <button id="btn-cancelar" class="btn-cancel hidden">Cancelar Edição</button>
+                            </div>
+                            
+                            <form id="form-usuario" class="form-body">
+                                <!-- Campo Oculto para ID (Usado no UPDATE) -->
+                                <input type="hidden" id="user-id" value="">
+
+                                <div class="form-group">
+                                    <label class="form-label" for="user-nome">
+                                        Nome Completo <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="user-nome" class="form-control" placeholder="Ex: Maria Silva" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="user-email">
+                                        E-mail <span class="required">*</span>
+                                    </label>
+                                    <input type="email" id="user-email" class="form-control" placeholder="maria@exemplo.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="user-status">Status</label>
+                                    <select id="user-status" class="form-control">
+                                        <option value="Ativo">Ativo</option>
+                                        <option value="Inativo">Inativo</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" id="btn-salvar" class="btn-submit">
+                                    <i class="fas fa-save"></i> <span id="btn-salvar-text">Salvar Usuário</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Coluna da Direita: Tabela de Usuários -->
+                    <div class="main-col">
+                        <div class="table-card">
+                            <div class="form-header">
+                                <h2 class="form-title">Usuários Cadastrados</h2>
+                                <!-- Adicionado onclick chamando a função recarregar a tabela manualmente se o usuário quiser -->
+                                <button onclick="criarTabelaUsuarios()" class="btn-refresh">
+                                    <i class="fas fa-sync-alt"></i> Atualizar
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr class="table-head-row">
+                                            <th>ID</th>
+                                            <th>Nome / E-mail</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-corpo">
+                                        <tr>
+                                            <td colspan="4" class="empty-state">
+                                                <i class="fas fa-spinner fa-spin"></i><br>
+                                                Carregando dados...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div> <!-- /layout-grid -->
+            </div> 
+        </div>
+    </main>
+
+    <!-- Container do Toast (Flutuante na tela) -->
+    <div id="toast-container"></div>
+
+    <!-- 
+       Apenas o script principal precisa ser importado.
+       Como usamos módulos, ele vai gerenciar a chamada para o script_db.js
+    -->
+    <script type="module" src="./script.js"></script>
+
+</body>
+</html>
