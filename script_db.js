@@ -1,10 +1,11 @@
-/* ==========================================================================
+
    PASSO 1: CONFIGURAÇÃO DE CONEXÃO
    Definimos onde está o banco e como chegar nele.
-   ========================================================================== */
+
 const DATABASE_URL = "postgresql://neondb_owner:npg_ABiGwmFr1U8c@ep-twilight-sound-ac8b61fo-pooler.sa-east-1.aws.neon.tech/idealab_db?sslmode=require&channel_binding=require";
 
 // Extraímos apenas o domínio da URL para montar o endereço HTTP correto do Neon
+
 const host = new URL(DATABASE_URL).host;
 const neonHttpEndpoint = `https://${host}/sql`;
 
@@ -14,17 +15,20 @@ const neonHttpEndpoint = `https://${host}/sql`;
 // const NEON_API_TOKEN = "https://ep-nameless-thunder-a4uhkv7y.apirest.us-east-1.aws.neon.tech/ETEC_A_2026/rest/v1"; // Substitua pelo token do painel do Neon
 
 
-/* ==========================================================================
+
    PASSO 2: O "MOTOR" DO BANCO DE DADOS (Função Auxiliar)
    Criamos uma função central para não precisarmos repetir o comando "fetch"
    e o tratamento de erros em toda santa consulta!
-   ========================================================================== */
+ 
+
 async function executarQueryNeon(querySQL, parametros = []) {
     try {
         const resposta = await fetch(neonHttpEndpoint, {
             method: 'POST',
             headers: {
+
                 // Passamos a URL de conexão completa neste cabeçalho específico do Neon
+
                 'Neon-Connection-String': DATABASE_URL,
                 'Content-Type': 'text/plain'
             },
@@ -35,12 +39,14 @@ async function executarQueryNeon(querySQL, parametros = []) {
         });
 
         // Se a requisição deu erro (ex: token errado, tabela não existe)
+
         if (!resposta.ok) {
             const erroTexto = await resposta.text();
             throw new Error(`Erro HTTP ${resposta.status}: ${erroTexto}`);
         }
 
         // Se deu certo, transforma a resposta em JSON e pega as "linhas" (rows)
+
         const dados = await resposta.json();
         return dados.rows;
 
@@ -51,13 +57,12 @@ async function executarQueryNeon(querySQL, parametros = []) {
 }
 
 
-/* ==========================================================================
    PASSO 3: FUNÇÕES CRUD (Create, Read, Update, Delete)
    Agora, graças ao nosso "Motor", só precisamos nos preocupar com o SQL!
 
    CORREÇÃO: todas as funções de escrita retornam true/false em vez do objeto,
    pois é isso que o script.js verifica com "if (sucesso)".
-   ========================================================================== */
+   
 
 // --- R (READ / LER) ---
 export async function consultarDiretoComFetch() {
