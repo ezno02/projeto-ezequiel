@@ -1,7 +1,8 @@
-/* ==========================================================================
+/*
    PASSO 1: IMPORTAÇÕES (Conexão com o Banco de Dados)
    Importamos as funções que conversam diretamente com o banco (script_db.js)
-   ========================================================================== */
+   */
+
 import { 
     consultarDiretoComFetch, 
     insertUsuario, 
@@ -9,10 +10,11 @@ import {
     sqlAtualizarUsuario 
 } from './script_db.js';
 
-/* ==========================================================================
+/* 
    PASSO 2: VARIÁVEIS GLOBAIS E ELEMENTOS DA TELA
    Pegamos os elementos do HTML que vamos manipular pelo JavaScript.
-   ========================================================================== */
+   */
+
 const formUsuario = document.getElementById('form-usuario');
 const tabelaUsuarios = document.getElementById('tabela-corpo');
 const btnCancelar = document.getElementById('btn-cancelar');
@@ -20,10 +22,10 @@ const formTitulo = document.getElementById('form-titulo');
 const btnSalvarText = document.getElementById('btn-salvar-text');
 
 
-/* ==========================================================================
+/* 
    PASSO 3: FUNÇÕES DE INTERFACE (Visuais)
    Funções que apenas mudam coisas na tela, sem mexer no banco de dados.
-   ========================================================================== */
+   */
 
 // Função para limpar o formulário e voltar ao estado de "Novo Cadastro"
 function limparFormulario() {
@@ -59,9 +61,10 @@ function mostrarToast(mensagem, tipo = 'success') {
 }
 
 
-/* ==========================================================================
+/* 
    PASSO 4: CRUD - READ (Ler e Listar Dados)
-   ========================================================================== */
+   */
+
 async function criarTabelaUsuarios() {
     // 1. Busca os dados no banco
     const dados = await consultarDiretoComFetch();
@@ -107,9 +110,9 @@ async function criarTabelaUsuarios() {
 }
 
 
-/* ==========================================================================
+/* 
    PASSO 5: CRUD - CREATE & UPDATE (Criar ou Atualizar Dados)
-   ========================================================================== */
+    */
 
 // Prepara o formulário com os dados da linha clicada
 window.prepararEdicao = function(id, nome, email, status) {
@@ -161,9 +164,10 @@ async function lidarComEnvioDoFormulario(event) {
 }
 
 
-/* ==========================================================================
+/* 
    PASSO 6: CRUD - DELETE (Excluir Dados)
-   ========================================================================== */
+   */
+
 window.deletarUsuario = async function(id) {
     if (confirm("Tem certeza que deseja excluir este usuário?")) {
         const sucesso = await sqlDeletarUsuario(id);
@@ -178,9 +182,10 @@ window.deletarUsuario = async function(id) {
 }
 
 
-/* ==========================================================================
+/* 
    PASSO 7: FUNÇÕES DE CONFIGURAÇÃO DO TOPO (Neon DB)
-   ========================================================================== */
+    */
+
 window.salvarConfiguracoes = function() {
     console.log("A ligar ao Neon...");
     mostrarToast("Conexão configurada (Simulação)", "info");
@@ -192,9 +197,9 @@ window.usarMock = function() {
 }
 
 
-/* ==========================================================================
+/* 
    PASSO 8: INICIALIZAÇÃO E EVENTOS
-   ========================================================================== */
+   */
 
 // Atrela a função unificada ao envio (submit) do formulário
 formUsuario.addEventListener('submit', lidarComEnvioDoFormulario);
