@@ -1,6 +1,6 @@
 
-   PASSO 1: CONFIGURAÇÃO DE CONEXÃO
-   Definimos onde está o banco e como chegar nele.
+   //PASSO 1: CONFIGURAÇÃO DE CONEXÃO
+   //Definimos onde está o banco e como chegar nele.
 
 const DATABASE_URL = "postgresql://neondb_owner:npg_ABiGwmFr1U8c@ep-twilight-sound-ac8b61fo-pooler.sa-east-1.aws.neon.tech/idealab_db?sslmode=require&channel_binding=require";
 
@@ -16,8 +16,8 @@ const neonHttpEndpoint = `https://${host}/sql`;
 
 
 
-   PASSO 2: O "MOTOR" DO BANCO DE DADOS (Função Auxiliar)
-   Criamos uma função central para não precisarmos repetir o comando "fetch"
+   //PASSO 2: O "MOTOR" DO BANCO DE DADOS (Função Auxiliar)
+   //Criamos uma função central para não precisarmos repetir o comando "fetch"
    e o tratamento de erros em toda santa consulta!
  
 
@@ -57,11 +57,11 @@ async function executarQueryNeon(querySQL, parametros = []) {
 }
 
 
-   PASSO 3: FUNÇÕES CRUD (Create, Read, Update, Delete)
-   Agora, graças ao nosso "Motor", só precisamos nos preocupar com o SQL!
+   //PASSO 3: FUNÇÕES CRUD (Create, Read, Update, Delete)
+   //Agora, graças ao nosso "Motor", só precisamos nos preocupar com o SQL!
 
-   CORREÇÃO: todas as funções de escrita retornam true/false em vez do objeto,
-   pois é isso que o script.js verifica com "if (sucesso)".
+   //CORREÇÃO: todas as funções de escrita retornam true/false em vez do objeto,
+   //pois é isso que o script.js verifica com "if (sucesso)".
    
 
 // --- R (READ / LER) ---
