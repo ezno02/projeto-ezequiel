@@ -1,20 +1,18 @@
-/*
+/* ==========================================================================
    PASSO 1: IMPORTAÇÕES (Conexão com o Banco de Dados)
    Importamos as funções que conversam diretamente com o banco (script_db.js)
-   */
-
-import { 
+   ========================================================================== */
+import {  
     consultarDiretoComFetch, 
     insertUsuario, 
     sqlDeletarUsuario, 
     sqlAtualizarUsuario 
 } from './script_db.js';
 
-/* 
+/* ==========================================================================
    PASSO 2: VARIÁVEIS GLOBAIS E ELEMENTOS DA TELA
    Pegamos os elementos do HTML que vamos manipular pelo JavaScript.
-   */
-
+   ========================================================================== */
 const formUsuario = document.getElementById('form-usuario');
 const tabelaUsuarios = document.getElementById('tabela-corpo');
 const btnCancelar = document.getElementById('btn-cancelar');
@@ -22,10 +20,10 @@ const formTitulo = document.getElementById('form-titulo');
 const btnSalvarText = document.getElementById('btn-salvar-text');
 
 
-/* 
+/* ==========================================================================
    PASSO 3: FUNÇÕES DE INTERFACE (Visuais)
    Funções que apenas mudam coisas na tela, sem mexer no banco de dados.
-   */
+   ========================================================================== */
 
 // Função para limpar o formulário e voltar ao estado de "Novo Cadastro"
 function limparFormulario() {
@@ -61,10 +59,9 @@ function mostrarToast(mensagem, tipo = 'success') {
 }
 
 
-/* 
+/* ==========================================================================
    PASSO 4: CRUD - READ (Ler e Listar Dados)
-   */
-
+   ========================================================================== */
 async function criarTabelaUsuarios() {
     // 1. Busca os dados no banco
     const dados = await consultarDiretoComFetch();
@@ -82,21 +79,41 @@ async function criarTabelaUsuarios() {
     dados.forEach(usuario => {
         const linha = document.createElement('tr');
         
-        // Define qual "badge" (etiqueta colorida) usar com base no status
-        const statusBadge = usuario.status === 'Ativo' 
-            ? '<span class="badge badge-active">Ativo</span>'
-            : '<span class="badge badge-inactive">Inativo</span>';
-        
+        // Define qual "badge" (etiqueta colorida) usar com base no area
+        // let statusBadge = '<span class="badge badge-'+ usuario.area.toLowerCase() +'">RH</span>';
+        // switch (usuario.area) {
+        //     case 'RH':
+        //         statusBadge ='<span class="badge badge-rh">RH</span>';
+        //         break;
+        //     case 'Atendimento':
+        //         statusBadge ='<span class="badge badge-atendimento">Atendimento</span>';
+        //         break;
+        //     case 'TI':
+        //         statusBadge ='<span class="badge badge-ti">TI</span>';
+        //         break;
+        //     case 'Infrestrutura':
+        //         statusBadge ='<span class="badge badge-infra">Infretrutura</span>';
+        //         break;
+        //     case 'Comunicacao':
+        //         statusBadge ='<span class="badge badge-comunicacao">Comunicacao</span>';
+        //         break;
+        //     case 'Outros':
+        //         statusBadge ='<span class="badge badge-outros">RH</span>';
+        //         break;
+
+
+        // }
+
         linha.innerHTML = `
             <td class="cell-id">#${usuario.id}</td>
             <td>
-                <p class="cell-name">${usuario.nome}</p>
-                <p class="cell-email">${usuario.email}</p>
+                <p class="cell-name">${usuario.autor}</p>
+                <p class="cell-email">${usuario.mensagem}</p>
             </td>
-            <td>${statusBadge}</td>
+            <td><span class="badge badge-${usuario.area.toLowerCase()}">${usuario.area}</span></td>
             <td>
                 <div class="action-container">
-                    <button onclick="prepararEdicao(${usuario.id}, '${usuario.nome}', '${usuario.email}', '${usuario.status}')" class="btn-action btn-edit" title="Editar">
+                    <button onclick="prepararEdicao(${usuario.id}, '${usuario.nome}', '${usuario.email}', '${usuario.area}')" class="btn-action btn-edit" title="Editar">
                         <i class="fas fa-pen"></i>
                     </button>
                     <button onclick="deletarUsuario(${usuario.id})" class="btn-action btn-delete" title="Excluir">
@@ -110,16 +127,16 @@ async function criarTabelaUsuarios() {
 }
 
 
-/* 
+/* ==========================================================================
    PASSO 5: CRUD - CREATE & UPDATE (Criar ou Atualizar Dados)
-    */
+   ========================================================================== */
 
 // Prepara o formulário com os dados da linha clicada
-window.prepararEdicao = function(id, nome, email, status) {
+window.prepararEdicao = function(id, nome, email, area) {
     document.getElementById('user-id').value = id; // Preenche o ID oculto (Isso diz ao sistema que é uma edição!)
     document.getElementById('user-nome').value = nome;
     document.getElementById('user-email').value = email;
-    document.getElementById('user-status').value = status;
+    document.getElementById('user-area').value = area;
     
     // Muda os textos visualmente para indicar que estamos a editar
     formTitulo.textContent = "Editar Usuário";
@@ -135,20 +152,20 @@ async function lidarComEnvioDoFormulario(event) {
     const id = document.getElementById('user-id').value;
     const nome = document.getElementById('user-nome').value;
     const email = document.getElementById('user-email').value;
-    const status = document.getElementById('user-status').value;
+    const area = document.getElementById('user-area').value;
 
     let sucesso = false;
 
     // Se tem ID, é uma ATUALIZAÇÃO (UPDATE)
     if (id) {
-        console.log("A atualizar utilizador:", { id, nome, email, status });
-        sucesso = await sqlAtualizarUsuario(id, nome, email, status);
+        console.log("A atualizar utilizador:", { id, nome, email, area });
+        sucesso = await sqlAtualizarUsuario(id, nome, email, area);
         if (sucesso) mostrarToast("Usuário atualizado com sucesso!", "success");
     } 
     // Se não tem ID, é uma CRIAÇÃO (CREATE)
     else {
-        console.log("A criar novo utilizador:", { nome, email, status });
-        sucesso = await insertUsuario(nome, email, status);
+        console.log("A criar novo utilizador:", { nome, email, area });
+        sucesso = await insertUsuario(nome, email, area);
         if (sucesso) mostrarToast("Usuário cadastrado com sucesso!", "success");
     }
 
@@ -164,10 +181,9 @@ async function lidarComEnvioDoFormulario(event) {
 }
 
 
-/* 
+/* ==========================================================================
    PASSO 6: CRUD - DELETE (Excluir Dados)
-   */
-
+   ========================================================================== */
 window.deletarUsuario = async function(id) {
     if (confirm("Tem certeza que deseja excluir este usuário?")) {
         const sucesso = await sqlDeletarUsuario(id);
@@ -182,10 +198,9 @@ window.deletarUsuario = async function(id) {
 }
 
 
-/* 
+/* ==========================================================================
    PASSO 7: FUNÇÕES DE CONFIGURAÇÃO DO TOPO (Neon DB)
-    */
-
+   ========================================================================== */
 window.salvarConfiguracoes = function() {
     console.log("A ligar ao Neon...");
     mostrarToast("Conexão configurada (Simulação)", "info");
@@ -197,9 +212,9 @@ window.usarMock = function() {
 }
 
 
-/* 
+/* ==========================================================================
    PASSO 8: INICIALIZAÇÃO E EVENTOS
-   */
+   ========================================================================== */
 
 // Atrela a função unificada ao envio (submit) do formulário
 formUsuario.addEventListener('submit', lidarComEnvioDoFormulario);
