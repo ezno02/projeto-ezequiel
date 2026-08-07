@@ -74,6 +74,7 @@ async function criarTabelaSugestao() {
     // 4. Para cada usuário, cria uma linha (<tr>) na tabela
     dados.forEach(sugestao => {
         const linha = document.createElement('tr');
+        console.log(sugestao)
         
         // Define qual "badge" (etiqueta colorida) usar com base no area
         // let statusBadge = '<span class="badge badge-'+ sugestao.area.toLowerCase() +'">RH</span>';
@@ -107,7 +108,7 @@ async function criarTabelaSugestao() {
             <td><span class="badge badge-${sugestao.area.toLowerCase()}">${sugestao.area}</span></td>
             <td>
                 <div class="action-container">
-                    <button onclick="prepararEdicao(${sugestao.id}, '${sugestao.nome}', '${sugestao.mensagem}', '${sugestao.area}')" class="btn-action btn-edit" title="Editar">
+                    <button onclick="prepararEdicao(${sugestao.id}, '${sugestao.autor}', '${sugestao.mensagem}', '${sugestao.area}')" class="btn-action btn-edit" title="Editar">
                         <i class="fas fa-pen"></i>
                     </button>
                     <button onclick="deletarMensagem(${sugestao.id})" class="btn-action btn-delete" title="Excluir">
@@ -133,8 +134,8 @@ window.prepararEdicao = function(id, nome, mensagem, area) {
     document.getElementById('user-area').value = area;
 
     // Muda os textos visualmente para indicar que estamos a editar
-    formTitulo.textContent = "Editar Usuário";
-    btnSalvarText.textContent = "Atualizar Usuário";
+    formTitulo.textContent = "Editar Sugestão";
+    btnSalvarText.textContent = "Atualizar Sugestão";
     btnCancelar.classList.remove('hidden'); // Mostra o botão cancelar
 }
 
