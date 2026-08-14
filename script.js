@@ -75,29 +75,11 @@ async function criarTabelaSugestao() {
     dados.forEach(sugestao => {
         const linha = document.createElement('tr');
         console.log(sugestao)
-        
-        // Define qual "badge" (etiqueta colorida) usar com base no area
-        // let statusBadge = '<span class="badge badge-'+ sugestao.area.toLowerCase() +'">RH</span>';
-        // switch (sugestao.area) {
-        //     case 'RH':
-        //         statusBadge ='<span class="badge badge-rh">RH</span>';
-        //         break;
-        //     case 'Atendimento':
-        //         statusBadge ='<span class="badge badge-atendimento">Atendimento</span>';
-        //         break;
-        //     case 'TI':
-        //         statusBadge ='<span class="badge badge-ti">TI</span>';
-        //         break;
-        //     case 'Infrestrutura':
-        //         statusBadge ='<span class="badge badge-infra">Infretrutura</span>';
-        //         break;
-        //     case 'Comunicacao':
-        //         statusBadge ='<span class="badge badge-comunicacao">Comunicacao</span>';
-        //         break;
-        //     case 'Outros':
-        //         statusBadge ='<span class="badge badge-outros">RH</span>';
-        //         break;
-        // }
+
+        //Formata a data e a hora recebida do banco 
+        const dataFormatada = sugestao.enviado_em
+            ? new Date(sugestao.enviado_em).toLocaleString('pt-BR')
+            : (sugestao.enviado_em) ? new Date(sugestao.enviado_em).toLocaleString('pt-BR') : ('N/A');
 
         linha.innerHTML = `
             <td class="cell-id">#${sugestao.id}</td>
@@ -105,6 +87,7 @@ async function criarTabelaSugestao() {
                 <p class="cell-name">${sugestao.autor}</p>
                 <p class="cell-mensagem">${sugestao.mensagem}</p>
             </td>
+            <td><span class="badge badge-date">${dataFormatada}</span></td>
             <td><span class="badge badge-${sugestao.area.toLowerCase()}">${sugestao.area}</span></td>
             <td>
                 <div class="action-container">

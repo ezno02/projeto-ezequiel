@@ -503,3 +503,9 @@ Toasts (Notificações)
 .badge-infraestrutura { background: var(--slate-200); color: var(--slate-700); }
 .badge-comunicacao { background: var(--blue-50); color: var(--indigo-700); }
 .badge-outros { background: var(--slate-100); color: var(--slate-600); }
+
+/* Cores da data*/
+.badge-date {
+    background-color: var(--blue-50);
+    color: var(--blue-600);
+}
